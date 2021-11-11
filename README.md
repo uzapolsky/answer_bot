@@ -12,6 +12,7 @@
 - `TELEGRAM_BOT_TOKEN` — токен телеграм бота службы поддержки.
 - `VK_BOT_TOKEN` — ключ для общения бота через VK.
 - `LOG_BOT_TOKEN` — токен телеграм бота для логирования.
+- `LOG_CHAT_ID` — chat_id того, кому логгер будет слать ошибки.
 - `GOOGLE_APPLICATION_CREDENTIALS` — путь к json файлу с ключами для DialogFlow.
 - `PROJECT_ID` — ID проекта из json файла с ключами.
 - `TRAINING_FILE` - путь к json файлу с тренировочными фразами.

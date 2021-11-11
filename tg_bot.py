@@ -3,14 +3,13 @@ import os
 
 from dotenv import load_dotenv
 from telegram import ForceReply, Update
+import telegram
 from telegram.ext import (CallbackContext, CommandHandler, Filters,
                           MessageHandler, Updater)
 
 from dialogflow_answer import detect_intent_texts
+from logger import TelegramLogsHandler
 
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-)
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +20,10 @@ def start(update: Update, context: CallbackContext) -> None:
         fr'Hi {user.mention_markdown_v2()}\!',
         reply_markup=ForceReply(selective=True),
     )
+
+
+def error(update, context):
+    logger.exception('Telegram bot error')
 
 
 def echo(update: Update, context: CallbackContext) -> None:
@@ -35,11 +38,17 @@ def echo(update: Update, context: CallbackContext) -> None:
 
 def main() -> None:
     load_dotenv()
+    log_bot = telegram.Bot(token=os.getenv('LOG_BOT_TOKEN'))
+    
+    logger.setLevel(logging.WARNING)
+    logger.addHandler(TelegramLogsHandler(log_bot, os.getenv('LOG_CHAT_ID')))
+    
     updater = Updater(os.getenv('TELEGRAM_BOT_TOKEN'))
     dispatcher = updater.dispatcher
 
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
+    dispatcher.add_error_handler(error)
 
     updater.start_polling()
     updater.idle()
