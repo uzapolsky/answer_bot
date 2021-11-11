@@ -5,6 +5,8 @@
 - `@hor_tok_sdf_bot`
 - [https://vk.com/club208761312](https://vk.com/club208761312)
 
+![Пример](https://media.giphy.com/media/VV4VklLhYbxBWJl8g1/giphy.gif)
+
 ### Как установить
 
 Создайте файл `.env` со следующими переменными:
