@@ -4,20 +4,22 @@ import vk_api as vk
 import os
 from dotenv import load_dotenv
 from vk_api.longpoll import VkLongPoll, VkEventType
-from dialogflow_anser import detect_intent_texts
+from dialogflow_answer import detect_intent_texts
 
 
 def echo(event, vk_api):
-    vk_api.messages.send(
-        user_id=event.user_id,
-        message=detect_intent_texts(
-            os.getenv('PROJECT_ID'),
-            event.user_id,
-            event.text,
-            'ru-RU'
-        ),
-        random_id=random.randint(1,1000)
+    is_fallback, message = detect_intent_texts(
+        os.getenv('PROJECT_ID'),
+        event.user_id,
+        event.text,
+        'ru-RU'
     )
+    if not is_fallback:
+        vk_api.messages.send(
+            user_id=event.user_id,
+            message=message,
+            random_id=random.randint(1,1000)
+        )
 
 
 def main() -> None:

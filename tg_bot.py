@@ -6,7 +6,7 @@ from telegram import ForceReply, Update
 from telegram.ext import (CallbackContext, CommandHandler, Filters,
                           MessageHandler, Updater)
 
-from dialogflow_anser import detect_intent_texts
+from dialogflow_answer import detect_intent_texts
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
@@ -24,14 +24,13 @@ def start(update: Update, context: CallbackContext) -> None:
 
 
 def echo(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text(
-        detect_intent_texts(
-            os.getenv('PROJECT_ID'),
-            update.message.from_user.id,
-            update.message.text,
-            'ru-RU')
+    is_fallback, message = detect_intent_texts(
+        os.getenv('PROJECT_ID'),
+        update.message.from_user.id,
+        update.message.text,
+        'ru-RU'
     )
-
+    update.message.reply_text(message)
 
 
 def main() -> None:
