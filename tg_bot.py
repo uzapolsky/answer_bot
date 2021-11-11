@@ -26,7 +26,7 @@ def error(update, context):
     logger.exception('Telegram bot error')
 
 
-def echo(update: Update, context: CallbackContext) -> None:
+def send_message(update: Update, context: CallbackContext) -> None:
     is_fallback, message = detect_intent_texts(
         os.getenv('PROJECT_ID'),
         update.message.from_user.id,
@@ -47,7 +47,7 @@ def main() -> None:
     dispatcher = updater.dispatcher
 
     dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, send_message))
     dispatcher.add_error_handler(error)
 
     updater.start_polling()

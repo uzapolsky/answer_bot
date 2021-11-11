@@ -13,7 +13,7 @@ from logger import TelegramLogsHandler
 logger = logging.getLogger(__name__)
 
 
-def echo(event, vk_api):
+def send_message(event, vk_api):
     is_fallback, message = detect_intent_texts(
         os.getenv('PROJECT_ID'),
         event.user_id,
@@ -40,7 +40,7 @@ def main() -> None:
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
             try:
-                echo(event, vk_api)
+                send_message(event, vk_api)
             except Exception:
                 logger.exception('VK bot error')
 
