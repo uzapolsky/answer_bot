@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 def send_message(event, vk_api):
     is_fallback, message = detect_intent_texts(
         os.getenv('PROJECT_ID'),
-        event.user_id,
+        f'vk_{event.user_id}',
         event.text,
         'ru-RU'
     )
