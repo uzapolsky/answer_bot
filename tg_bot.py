@@ -27,7 +27,7 @@ def error(update, context):
 
 
 def send_message(update: Update, context: CallbackContext) -> None:
-    is_fallback, message = detect_intent_texts(
+    _, message = detect_intent_texts(
         os.getenv('PROJECT_ID'),
         update.message.from_user.id,
         update.message.text,
